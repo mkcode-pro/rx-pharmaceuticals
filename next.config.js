@@ -1,6 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   allowedDevOrigins: ["*.preview.same-app.com"],
+  // Turbopack experimental features
+  experimental: {
+    turbo: {
+      // Configurações específicas do Turbopack
+      rules: {
+        // Otimizações para arquivos específicos
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
   images: {
     unoptimized: true,
     domains: [
