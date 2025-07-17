@@ -67,9 +67,9 @@ export function ProductsPage() {
       return true
     })
 
-    // Remove duplicates based on product ID to prevent React key conflicts
-    const uniqueProducts = filtered.filter((product, index, array) => 
-      array.findIndex(p => p.id === product.id) === index
+    // Remove duplicates using Map for better performance and reliability
+    const uniqueProducts = Array.from(
+      new Map(filtered.map(product => [product.id, product])).values()
     )
 
     // Sort products
