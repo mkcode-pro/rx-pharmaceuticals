@@ -67,13 +67,8 @@ export function ProductsPage() {
       return true
     })
 
-    // Remove duplicates using Map for better performance and reliability
-    const uniqueProducts = Array.from(
-      new Map(filtered.map(product => [product.id, product])).values()
-    )
-
     // Sort products
-    uniqueProducts.sort((a, b) => {
+    filtered.sort((a, b) => {
       switch (sortBy) {
         case "price-low":
           return a.price - b.price
@@ -89,7 +84,7 @@ export function ProductsPage() {
       }
     })
 
-    return uniqueProducts
+    return filtered
   }, [searchTerm, sortBy, filters])
 
   // Pagination

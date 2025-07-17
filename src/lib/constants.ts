@@ -2,15 +2,6 @@ export const siteConfig = {
   name: "RX Pharmaceuticals Brazil",
   description: "Sua farmácia de produtos de alta performance",
   url: "https://rxpharmaceuticals.com.br",
-  contact: {
-    whatsapp: "+5511999999999",
-    email: "contato@rxpharmaceuticals.com.br",
-    phone: "+5511999999999"
-  },
-  social: {
-    instagram: "https://instagram.com/rxpharmaceuticals",
-    facebook: "https://facebook.com/rxpharmaceuticals"
-  },
   mainNav: [
     {
       title: "Início",

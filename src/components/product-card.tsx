@@ -8,8 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { Heart, ShoppingCart, Eye } from "lucide-react"
 import { Star } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
-import { analytics } from "@/lib/analytics"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
 
 interface Product {
   id: string
@@ -32,7 +30,6 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart()
-  const [isAddingToCart, setIsAddingToCart] = React.useState(false)
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -41,20 +38,7 @@ export function ProductCard({ product }: ProductCardProps) {
     }).format(price)
   }
 
-  const handleAddToCart = async () => {
-    setIsAddingToCart(true)
-    
-    // Analytics tracking
-    analytics.addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      category: product.category
-    })
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500))
-    
+  const handleAddToCart = () => {
     addItem({
       id: product.id,
       name: product.name,
@@ -62,8 +46,6 @@ export function ProductCard({ product }: ProductCardProps) {
       image: product.image,
       slug: product.slug,
     })
-    
-    setIsAddingToCart(false)
   }
 
   const renderStars = (rating: number) => {
@@ -171,21 +153,14 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="space-y-1 sm:space-y-1.5 md:space-y-2 w-full">
             <Button
               onClick={handleAddToCart}
-              disabled={isAddingToCart}
               className="w-full bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm py-2 sm:py-2.5 min-h-[40px] sm:min-h-[44px] font-medium"
               size="sm"
             >
-              {isAddingToCart ? (
-                <LoadingSpinner size="sm" />
-              ) : (
-                <>
-                  <ShoppingCart className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
-                  <span className="hidden xs:inline sm:hidden">ADD</span>
-                  <span className="hidden sm:inline lg:hidden">ADICIONAR</span>
-                  <span className="hidden lg:inline">ADICIONAR AO</span>
-                  <span className="xs:hidden sm:inline"> CARRINHO</span>
-                </>
-              )}
+              <ShoppingCart className="h-3 sm:h-4 w-3 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="hidden xs:inline sm:hidden">ADD</span>
+              <span className="hidden sm:inline lg:hidden">ADICIONAR</span>
+              <span className="hidden lg:inline">ADICIONAR AO</span>
+              <span className="xs:hidden sm:inline"> CARRINHO</span>
             </Button>
 
             <Button
