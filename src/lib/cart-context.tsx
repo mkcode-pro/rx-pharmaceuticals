@@ -1,6 +1,7 @@
 "use client"
 
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 interface CartItem {
   id: string
@@ -112,40 +113,33 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState)
+  const [, setCartStorage, isStorageLoading] = useLocalStorage('cart', initialState)
 
-  // Load cart from localStorage on mount
+  // Save cart to localStorage when state changes (debounced)
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart')
-    if (savedCart) {
-      try {
-        const cartData = JSON.parse(savedCart)
-        dispatch({ type: 'LOAD_CART', payload: cartData })
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error)
-      }
+    if (!isStorageLoading) {
+      const timeoutId = setTimeout(() => {
+        setCartStorage(state)
+      }, 300)
+      return () => clearTimeout(timeoutId)
     }
+  }, [state, setCartStorage, isStorageLoading])
+
+  const addItem = useCallback((item: Omit<CartItem, 'quantity'>) => {
+    dispatch({ type: 'ADD_ITEM', payload: item })
   }, [])
 
-  // Save cart to localStorage when state changes
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(state))
-  }, [state])
-
-  const addItem = (item: Omit<CartItem, 'quantity'>) => {
-    dispatch({ type: 'ADD_ITEM', payload: item })
-  }
-
-  const removeItem = (id: string) => {
+  const removeItem = useCallback((id: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: { id } })
-  }
+  }, [])
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = useCallback((id: string, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } })
-  }
+  }, [])
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     dispatch({ type: 'CLEAR_CART' })
-  }
+  }, [])
 
   return (
     <CartContext.Provider value={{
