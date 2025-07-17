@@ -67,8 +67,13 @@ export function ProductsPage() {
       return true
     })
 
+    // Remove duplicates based on product ID to prevent React key conflicts
+    const uniqueProducts = filtered.filter((product, index, array) => 
+      array.findIndex(p => p.id === product.id) === index
+    )
+
     // Sort products
-    filtered.sort((a, b) => {
+    uniqueProducts.sort((a, b) => {
       switch (sortBy) {
         case "price-low":
           return a.price - b.price
@@ -84,7 +89,7 @@ export function ProductsPage() {
       }
     })
 
-    return filtered
+    return uniqueProducts
   }, [searchTerm, sortBy, filters])
 
   // Pagination
