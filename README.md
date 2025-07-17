@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+(INSTALE EM UMA PORTA QUE NÃO ESTEJA SENDO USADA, SEMPRE VERIFIQUE AS PORTAS DISPONIVEIS E LIVRES!
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
