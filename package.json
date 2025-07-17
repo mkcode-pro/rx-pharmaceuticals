@@ -4,14 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack",
-    "dev:webpack": "next dev -H 0.0.0.0",
-    "dev:turbo": "next dev -H 0.0.0.0 --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "format": "bunx biome format --write",
-    "analyze": "ANALYZE=true next build"
+    "format": "bunx biome format --write"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
